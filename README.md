@@ -1,7 +1,5 @@
-# Quote Locker Basic REST API with Rails
-
-This is the concept application for
-[*QuoteLocker*](http://neilmpatterson.ghost.io/)
+This is tutorial for creating an api. The article can be found in my blog
+[*Basic-Rest-API-with-Rails*](http://neilmpatterson.ghost.io/basic-rest-api-with-rails/)
 by [Neil Patterson](http://neilmpatterson.ghost.io/).
 
 _April 23, 2014_
@@ -25,9 +23,9 @@ Let's have a look at our proposed models:
 ---
 	
 - Authors
-  - has_many :quotes
-  - first_name:string
-  - last_name:string
+  - has\_many :quotes
+  - first\_name:string
+  - last\_name:string
   - middle_name:string
   - title:string
   - source:string
@@ -138,7 +136,7 @@ Now we can return something to our json view template. We will use jbuilder so l
     $ rm update.html.erb
     $ cd -
     
-__/app/views/api/v1/authors/index.json.jbuilder__
+__app/views/api/v1/authors/index.json.jbuilder__
 
     json.array!(@authors) do |author|
     	json.id author.id
@@ -153,7 +151,7 @@ Now if we start the rails server `$ rails s` and then navigate to the authors ap
 
 But we are returning first, last and middle names. Would be nice to only return full name, right? Lets just add a full_name method to the model and update the json:
 
-__/app/models/author.rb__
+__app/models/author.rb__
 
     class Author < ActiveRecord::Base
     	def full_name
@@ -161,7 +159,7 @@ __/app/models/author.rb__
     	end
     end
     
- __/app/views/api/v1/authors/index.json.jbuilder__
+ __app/views/api/v1/authors/index.json.jbuilder__
  
      json.array!(@authors) do |author|
      	json.id author.id
@@ -193,7 +191,7 @@ __app/controllers/api/v1/authors_controller.rb__
       end
     end
     
-  __/app/views/api/v1/authors/show.json.jbuilder__
+  __app/views/api/v1/authors/show.json.jbuilder__
   
       json.(@author, :id, :full_name, :title, :source) 
 
@@ -272,13 +270,13 @@ The model is not available until we migrate the db:
     
 The Quotes will belong to Authors so we need to tell our models:
 
-__/app/models/quote.rb__
+__app/models/quote.rb__
 
     class Quote < ActiveRecord::Base
     	belongs_to :author
     end
 
-__/app/models/author.rb__
+__app/models/author.rb__
 
     class Author < ActiveRecord::Base
     	has_many :quotes
@@ -333,7 +331,7 @@ __app/controllers/api/v1/quotes_controller.rb__
 
 Update the templates:
     
-     $ cd app/views/api/v1/authors/
+     $ cd app/views/api/v1/quotes/
         $ mv index.html.erb index.json.jbuilder -i
         $ mv show.html.erb show.json.jbuilder -i
         $ rm create.html.erb
@@ -341,7 +339,7 @@ Update the templates:
         $ rm update.html.erb
         $ cd -
         
-__/app/views/api/v1/quotes/index.json.jbuilder__
+__app/views/api/v1/quotes/index.json.jbuilder__
 
     json.array!(@quotes) do |quote|
     	json.id quote.id
@@ -352,7 +350,7 @@ __/app/views/api/v1/quotes/index.json.jbuilder__
     
 Notice the json.author line above? It will pull in the author details to show when we list out all quotes! Associative data, no joins required!!
 
- __/app/views/api/v1/quotes/show.json.jbuilder__
+ __app/views/api/v1/quotes/show.json.jbuilder__
   
       json.(@quote, :id, :content, :public)
       json.author @quote.author, :id, :full_name, :title, :source
@@ -383,3 +381,10 @@ We can return author data in our show response as well. Everything's in place so
       url: http://127.0.0.1:3000/api/v1/quotes/:id 
       method: DELETE
       body : not needed
+      
+---
+      
+That's it! We've made a really basic API that we can start using to build our backbone site. There are a couple more models to add and probably ways I can make this process easier. However, it's a good start and there's something to show. Soon we'll also add pagination to limit results, authentication and search features.
+
+
+      

@@ -16,19 +16,19 @@ The idea is to build a library of Quotations that users can save to collections,
 Let's have a look at our proposed models:
 
 ### Models
-Quotes
-	* belongs_to :authors
-	* author_id:integer FK	
-	* content:string
-	* public:boolean
+- Quotes
+  - belongs_to :authors
+  - author_id:integer FK	
+  - content:string
+  - public:boolean
 	
-Authors
-	* has_many :quotes
-	* first_name:string
-	* last_name:string
-	* middle_name:string
-	* title:string
-	* source:string
+- Authors
+  - has_many :quotes
+  - first_name:string
+  - last_name:string
+  - middle_name:string
+  - title:string
+  - source:string
 	
 Pretty straight-forward we will have authors which are person who is delivering the quotes and the quotes themselves. An Author can have many quotes, but a quote can only belong to one author. 
 
